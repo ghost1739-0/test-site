@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createProduct, deleteProduct, fetchProducts, updateProduct } from "../api/productsApi";
 import { useAuth } from "../context/AuthContext";
+import { API_BASE } from "../api/client";
 import { uploadProductImage } from "../api/uploadApi";
 
 const emptyForm = {
@@ -78,7 +79,8 @@ export default function AdminProductsPage() {
     setUploading(true);
     try {
       const payload = await uploadProductImage(file);
-      setForm((prev) => ({ ...prev, imageUrl: `http://localhost:5000${payload.fileUrl}` }));
+      const uploadBase = API_BASE.replace(/\/api$/, "");
+      setForm((prev) => ({ ...prev, imageUrl: `${uploadBase}${payload.fileUrl}` }));
       setMessage("Gorsel yuklendi.");
     } catch (error) {
       setMessage(error.message);
