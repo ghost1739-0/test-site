@@ -9,6 +9,15 @@ export default function OrderDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [actionMessage, setActionMessage] = useState("");
+  const [returnReason, setReturnReason] = useState("Ürün beklentimi karşılamadı");
+
+  const returnReasons = [
+    "Ürün hasarlı geldi",
+    "Yanlış ürün gönderildi",
+    "Ürün beklentimi karşılamadı",
+    "Beden/ölçü uyumsuz",
+    "Eksik parça/aksesuar",
+  ];
 
   useEffect(() => {
     async function loadOrder() {
@@ -31,7 +40,7 @@ export default function OrderDetailPage() {
 
   async function handleReturnRequest() {
     try {
-      await requestReturnOrder(id, "Müşteri iade talebi oluşturdu");
+      await requestReturnOrder(id, returnReason);
       setActionMessage("İade talebi gönderildi.");
       const data = await fetchOrderById(id);
       setOrder(data);
@@ -72,11 +81,28 @@ export default function OrderDetailPage() {
         </section>
       </div>
 
+      {order.trackingStatus === "delivered" && !order.returnRequested && !order.returnedAt && (
+        <section className="space-y-3 rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
+          <h3 className="text-sm font-semibold text-zinc-100">İade nedeni</h3>
+          <select
+            value={returnReason}
+            onChange={(event) => setReturnReason(event.target.value)}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
+          >
+            {returnReasons.map((reason) => (
+              <option key={reason} value={reason}>
+                {reason}
+              </option>
+            ))}
+          </select>
+        </section>
+      )}
+
       <div className="flex flex-wrap gap-3">
         <button
           onClick={handleReturnRequest}
           className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-100"
-          disabled={!order.isDelivered || Boolean(order.returnedAt)}
+          disabled={order.trackingStatus !== "delivered" || Boolean(order.returnRequested) || Boolean(order.returnedAt)}
         >
           İade talebi oluştur
         </button>

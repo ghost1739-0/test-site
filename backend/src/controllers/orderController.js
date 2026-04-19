@@ -251,7 +251,9 @@ export async function requestOrderReturn(req, res) {
     throw new Error("Not authorized to return this order.");
   }
 
-  if (!order.isDelivered) {
+  const delivered = order.isDelivered || order.trackingStatus === "delivered";
+
+  if (!delivered) {
     res.status(400);
     throw new Error("Only delivered orders can be returned.");
   }
