@@ -1,25 +1,8 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
-import { useAuth } from "../context/AuthContext";
-import { trCategory } from "../utils/localeTr";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
-  const { ids, toggle } = useWishlist();
-  const { user } = useAuth();
-  const isFavorite = ids.has(product._id);
-
-  async function handleWishlistToggle() {
-    if (!user) {
-      return;
-    }
-    try {
-      await toggle(product._id);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   return (
     <article className="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-zinc-950/70 shadow-[0_20px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:border-rose-500/40 hover:shadow-[0_24px_90px_rgba(244,63,94,0.16)]">
@@ -30,24 +13,6 @@ export default function ProductCard({ product }) {
           className="h-56 w-full object-cover transition duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-70" />
-        <div className="absolute left-4 top-4 flex items-center gap-2">
-          <span className="rounded-full bg-zinc-950/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-100 backdrop-blur-md">
-            {trCategory(product.category)}
-          </span>
-          <span className="rounded-full bg-rose-500/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-md">
-            Stok: {product.stock}
-          </span>
-        </div>
-        <button
-          onClick={handleWishlistToggle}
-          className={`absolute right-4 top-4 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] backdrop-blur-md transition ${
-            isFavorite
-              ? "border-rose-400 bg-rose-500/80 text-white"
-              : "border-white/20 bg-zinc-950/70 text-zinc-200 hover:border-rose-400"
-          }`}
-        >
-          {isFavorite ? "Favori" : "Favorilere ekle"}
-        </button>
       </div>
 
       <div className="space-y-4 p-5">

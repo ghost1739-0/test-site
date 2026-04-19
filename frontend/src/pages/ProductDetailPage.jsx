@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { createProductReview, fetchProductById } from "../api/productsApi";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { useWishlist } from "../context/WishlistContext";
 import { trCategory } from "../utils/localeTr";
 
 export default function ProductDetailPage() {
@@ -15,6 +16,7 @@ export default function ProductDetailPage() {
   const [reviewSuccess, setReviewSuccess] = useState("");
   const { addToCart } = useCart();
   const { user } = useAuth();
+  const { ids, toggle } = useWishlist();
 
   useEffect(() => {
     async function loadProduct() {
@@ -58,13 +60,39 @@ export default function ProductDetailPage() {
     }
   }
 
+  const isFavorite = ids.has(product._id);
+
+  async function handleWishlistToggle() {
+    if (!user) {
+      return;
+    }
+    try {
+      await toggle(product._id);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <main className="grid gap-6 lg:grid-cols-[1.1fr,0.9fr]">
       <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-zinc-950/70 shadow-[0_20px_80px_rgba(0,0,0,0.28)]">
         <img src={product.imageUrl} alt={product.name} className="h-full min-h-[520px] w-full object-cover" />
       </section>
 
-      <section className="rounded-[2rem] border border-white/10 bg-zinc-950/75 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+      <section className="relative rounded-[2rem] border border-white/10 bg-zinc-950/75 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+        <button
+          onClick={handleWishlistToggle}
+          aria-label={isFavorite ? "Favorilerden çıkar" : "Favorilere ekle"}
+          className={`absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-full border transition ${
+            isFavorite
+              ? "border-rose-400 bg-rose-500/20 text-rose-500"
+              : "border-white/20 bg-white/5 text-zinc-200 hover:border-rose-400 hover:text-rose-400"
+          }`}
+        >
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M12 21s-6.5-4.35-9-8.1C1.26 10.2 1.8 6.86 4.68 5.3c2.12-1.14 4.58-.56 6 1.22 1.42-1.78 3.88-2.36 6-1.22 2.88 1.56 3.42 4.9 1.68 7.6-2.5 3.75-9 8.1-9 8.1z" />
+          </svg>
+        </button>
         <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">{trCategory(product.category)}</p>
         <h1 className="mt-2 text-4xl font-black tracking-tight text-zinc-100">{product.name}</h1>
         <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-zinc-400">
