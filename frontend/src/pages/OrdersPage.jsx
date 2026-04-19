@@ -69,7 +69,14 @@ export default function OrdersPage() {
               </div>
               <div className="text-right">
                 <p className="text-rose-400 font-black">{order.totalPrice} TL</p>
-                <p className="text-sm text-zinc-400">{trTrackingStatus(order.trackingStatus)}</p>
+                <p className="text-sm text-zinc-400">
+                  {order.returnRejectedAt ? "Iade edilemedi" : trTrackingStatus(order.trackingStatus)}
+                </p>
+                {order.returnRejectedAt && (
+                  <p className="mt-1 max-w-[240px] text-xs text-rose-300">
+                    Sebep: {order.returnRejectReason || "Belirtilmedi."}
+                  </p>
+                )}
               </div>
             </div>
           </Link>
