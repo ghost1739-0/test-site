@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import ProductFilters from "../components/ProductFilters";
 import { fetchProductsPage } from "../api/productsApi";
@@ -55,27 +54,7 @@ export default function HomePage() {
 
   return (
     <main className="space-y-6">
-      <section className="overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/60 p-6 backdrop-blur-md">
-        <div>
-          <p className="text-sm uppercase tracking-[0.3em] text-zinc-400">Premium storefront</p>
-          <h1 className="mt-3 text-4xl font-black leading-tight text-zinc-100 sm:text-6xl">
-            Modern bir e-ticaret sitesinden beklediğin her şey.
-          </h1>
-          <p className="mt-4 max-w-3xl text-zinc-300">
-            Temiz bir arayüzle ara, filtrele, ürün incele, sepete ekle, ödeme yap ve siparişlerini takip et.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/checkout" className="rounded-full bg-rose-500 px-5 py-3 font-semibold text-white transition hover:bg-rose-400">
-              Ödemeye git
-            </Link>
-            <Link to="/orders" className="rounded-full border border-zinc-700 px-5 py-3 font-semibold text-zinc-200 transition hover:border-rose-500 hover:text-rose-300">
-              Siparişleri gör
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <div className="grid gap-6 lg:grid-cols-[280px,1fr]">
+      <div className="space-y-6">
         <ProductFilters
           categories={categories}
           selectedCategory={category}
