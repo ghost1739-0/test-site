@@ -177,6 +177,14 @@ export async function updateTracking(req, res) {
   }
   if (typeof trackingStatus !== "undefined") {
     order.trackingStatus = trackingStatus;
+
+    if (trackingStatus === "delivered") {
+      order.isDelivered = true;
+      order.deliveredAt = order.deliveredAt || new Date();
+    } else {
+      order.isDelivered = false;
+      order.deliveredAt = undefined;
+    }
   }
 
   await order.save();

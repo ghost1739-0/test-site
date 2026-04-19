@@ -68,7 +68,7 @@ export default function OrderDetailPage() {
           <p>{order.shippingAddress.city}, {order.shippingAddress.postalCode}</p>
           <p>{order.shippingAddress.country}</p>
           <p className="pt-3 text-sm">Ödeme yöntemi: {trPaymentMethod(order.paymentMethod)}</p>
-          <p className="text-sm">Durum: {order.isDelivered ? "Teslim edildi" : "Hazırlanıyor"}</p>
+          <p className="text-sm">Durum: {trTrackingStatus(order.trackingStatus)}</p>
         </section>
       </div>
 
