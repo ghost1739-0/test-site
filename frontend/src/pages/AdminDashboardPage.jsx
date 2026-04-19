@@ -28,6 +28,8 @@ export default function AdminDashboardPage() {
   const [couponForm, setCouponForm] = useState(initialCoupon);
   const [message, setMessage] = useState("");
   const [orderActionMessage, setOrderActionMessage] = useState("");
+  const [orderActionError, setOrderActionError] = useState("");
+  const [pendingReturnActionId, setPendingReturnActionId] = useState("");
   const [returnRejectReasons, setReturnRejectReasons] = useState({});
 
   function trDiscountType(type) {
@@ -70,16 +72,40 @@ export default function AdminDashboardPage() {
   }
 
   async function handleApproveReturn(orderId) {
-    await approveReturnAdmin(orderId);
-    setOrderActionMessage("İade onaylandı.");
-    await loadAll();
+    setOrderActionMessage("");
+    setOrderActionError("");
+    setPendingReturnActionId(orderId);
+
+    try {
+      await approveReturnAdmin(orderId);
+      setOrderActionMessage("İade onaylandı.");
+      await loadAll();
+    } catch (error) {
+      setOrderActionError(error.message);
+    } finally {
+      setPendingReturnActionId("");
+    }
   }
 
   async function handleRejectReturn(orderId) {
     const reason = (returnRejectReasons[orderId] || "").trim();
-    await rejectReturnAdmin(orderId, reason);
-    setOrderActionMessage("İade reddedildi.");
-    await loadAll();
+    setOrderActionMessage("");
+    setOrderActionError("");
+    setPendingReturnActionId(orderId);
+
+    try {
+      await rejectReturnAdmin(orderId, reason);
+      setOrderActionMessage("İade reddedildi.");
+      setReturnRejectReasons((current) => ({
+        ...current,
+        [orderId]: "",
+      }));
+      await loadAll();
+    } catch (error) {
+      setOrderActionError(error.message);
+    } finally {
+      setPendingReturnActionId("");
+    }
   }
 
   async function handleCreateCoupon(event) {
@@ -103,6 +129,7 @@ export default function AdminDashboardPage() {
     <main className="space-y-6">
       <h1 className="text-3xl font-black text-zinc-100">Yönetici Paneli</h1>
       {orderActionMessage && <p className="text-sm text-emerald-300">{orderActionMessage}</p>}
+      {orderActionError && <p className="text-sm text-rose-300">{orderActionError}</p>}
 
       {stats && (
         <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
@@ -258,7 +285,7 @@ export default function AdminDashboardPage() {
                   {order.returnRequested && !order.returnedAt && !order.returnRejectedAt && (
                     <>
                       <button type="button" onClick={() => handleApproveReturn(order._id)} className="rounded-lg bg-emerald-500 px-2 py-1 text-black">
-                        İadeyi onayla
+                        {pendingReturnActionId === order._id ? "İşleniyor..." : "İadeyi onayla"}
                       </button>
                       <input
                         value={returnRejectReasons[order._id] || ""}
@@ -271,8 +298,13 @@ export default function AdminDashboardPage() {
                         placeholder="Red nedeni yaz"
                         className="min-w-[180px] rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1 text-zinc-100"
                       />
-                      <button type="button" onClick={() => handleRejectReturn(order._id)} className="rounded-lg bg-rose-500 px-2 py-1 text-white">
-                        İadeyi reddet
+                      <button
+                        type="button"
+                        onClick={() => handleRejectReturn(order._id)}
+                        disabled={pendingReturnActionId === order._id}
+                        className="rounded-lg bg-rose-500 px-2 py-1 text-white disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {pendingReturnActionId === order._id ? "Gönderiliyor..." : "İadeyi reddet"}
                       </button>
                     </>
                   )}
