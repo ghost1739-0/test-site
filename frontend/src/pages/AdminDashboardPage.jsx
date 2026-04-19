@@ -237,6 +237,11 @@ export default function AdminDashboardPage() {
                     </button>
                   )}
                 </div>
+                {order.returnReason && (
+                  <p className="mt-2 text-xs text-zinc-400">
+                    İade nedeni: <span className="text-zinc-200">{order.returnReason}</span>
+                  </p>
+                )}
               </article>
             ))}
           </div>
