@@ -62,18 +62,18 @@ export default function OrdersPage() {
             to={`/orders/${order._id}`}
             className="block rounded-[1.75rem] border border-white/10 bg-zinc-950/70 p-5 transition duration-300 hover:-translate-y-0.5 hover:border-rose-500/40 hover:bg-zinc-950"
           >
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-sm text-zinc-400">Siparis #{order._id.slice(-6)}</p>
                 <p className="font-bold text-zinc-100">{order.orderItems.length} urun</p>
               </div>
-              <div className="text-right">
+              <div className="w-full text-left sm:w-auto sm:text-right">
                 <p className="text-rose-400 font-black">{order.totalPrice} TL</p>
                 <p className="text-sm text-zinc-400">
                   {order.returnRejectedAt ? "Iade edilemedi" : trTrackingStatus(order.trackingStatus)}
                 </p>
                 {order.returnRejectedAt && (
-                  <p className="mt-1 max-w-[240px] text-xs text-rose-300">
+                  <p className="mt-1 break-words text-xs text-rose-300 sm:max-w-[240px]">
                     Sebep: {order.returnRejectReason || "Belirtilmedi."}
                   </p>
                 )}
