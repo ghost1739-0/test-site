@@ -3,6 +3,7 @@ import {
   approveCancelAdmin,
   approveReturnAdmin,
   fetchAllOrdersAdmin,
+  rejectReturnAdmin,
   updateTrackingAdmin,
 } from "../api/ordersApi";
 import { createCoupon, deleteCoupon, fetchAdminStats, fetchCoupons, fetchStockAlerts } from "../api/adminApi";
@@ -26,6 +27,7 @@ export default function AdminDashboardPage() {
   const [coupons, setCoupons] = useState([]);
   const [couponForm, setCouponForm] = useState(initialCoupon);
   const [message, setMessage] = useState("");
+  const [returnRejectReasons, setReturnRejectReasons] = useState({});
 
   function trDiscountType(type) {
     if (type === "percent") return "Yüzde";
@@ -68,6 +70,12 @@ export default function AdminDashboardPage() {
 
   async function handleApproveReturn(orderId) {
     await approveReturnAdmin(orderId);
+    await loadAll();
+  }
+
+  async function handleRejectReturn(orderId) {
+    const reason = (returnRejectReasons[orderId] || "").trim();
+    await rejectReturnAdmin(orderId, reason);
     await loadAll();
   }
 
@@ -231,15 +239,36 @@ export default function AdminDashboardPage() {
                       İptali onayla
                     </button>
                   )}
-                  {order.returnRequested && !order.returnedAt && (
-                    <button onClick={() => handleApproveReturn(order._id)} className="rounded-lg bg-emerald-500 px-2 py-1 text-black">
-                      İadeyi onayla
-                    </button>
+                  {order.returnRequested && !order.returnedAt && !order.returnRejectedAt && (
+                    <>
+                      <button onClick={() => handleApproveReturn(order._id)} className="rounded-lg bg-emerald-500 px-2 py-1 text-black">
+                        İadeyi onayla
+                      </button>
+                      <input
+                        value={returnRejectReasons[order._id] || ""}
+                        onChange={(event) =>
+                          setReturnRejectReasons((current) => ({
+                            ...current,
+                            [order._id]: event.target.value,
+                          }))
+                        }
+                        placeholder="Red nedeni yaz"
+                        className="min-w-[180px] rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1 text-zinc-100"
+                      />
+                      <button onClick={() => handleRejectReturn(order._id)} className="rounded-lg bg-rose-500 px-2 py-1 text-white">
+                        İadeyi reddet
+                      </button>
+                    </>
                   )}
                 </div>
                 {order.returnReason && (
                   <p className="mt-2 text-xs text-zinc-400">
                     İade nedeni: <span className="text-zinc-200">{order.returnReason}</span>
+                  </p>
+                )}
+                {order.returnRejectedAt && (
+                  <p className="mt-1 text-xs text-rose-300">
+                    Ret nedeni: <span className="text-zinc-100">{order.returnRejectReason || "Belirtilmedi."}</span>
                   </p>
                 )}
               </article>

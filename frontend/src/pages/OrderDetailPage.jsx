@@ -117,6 +117,13 @@ export default function OrderDetailPage() {
         </section>
       )}
 
+      {order.returnRejectedAt && (
+        <section className="rounded-[1.25rem] border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-100">
+          <p className="font-semibold">İade talebi reddedildi.</p>
+          <p className="mt-1 text-rose-200">Sebep: {order.returnRejectReason || "Belirtilmedi."}</p>
+        </section>
+      )}
+
       <div className="flex flex-wrap gap-3">
         <button
           onClick={() => setShowReturnForm((current) => !current)}

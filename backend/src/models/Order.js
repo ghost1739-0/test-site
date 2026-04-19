@@ -129,6 +129,11 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    returnRejectedAt: Date,
+    returnRejectReason: {
+      type: String,
+      default: "",
+    },
     returnedAt: Date,
   },
   {

@@ -287,3 +287,21 @@ export async function approveOrderReturn(req, res) {
 
   res.status(200).json({ message: "Order return approved.", order });
 }
+
+export async function rejectOrderReturn(req, res) {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    res.status(404);
+    throw new Error("Order not found.");
+  }
+
+  const reason = typeof req.body.reason === "string" ? req.body.reason.trim() : "";
+
+  order.returnRejectedAt = new Date();
+  order.returnRejectReason = reason || "İade talebi uygun bulunmadı.";
+
+  await order.save();
+
+  res.status(200).json({ message: "Order return rejected.", order });
+}

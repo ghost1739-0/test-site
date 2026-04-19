@@ -51,3 +51,10 @@ export function approveReturnAdmin(id) {
     method: "PUT",
   });
 }
+
+export function rejectReturnAdmin(id, reason) {
+  return request(`/orders/${id}/return-reject`, {
+    method: "PUT",
+    body: JSON.stringify({ reason }),
+  });
+}
