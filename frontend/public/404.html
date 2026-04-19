@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yönlendiriliyor...</title>
+    <script>
+      (function () {
+        var path = window.location.pathname.replace(/\/+$/, "") || "/";
+        if (path === "/404.html") {
+          path = "/";
+        }
+        var search = window.location.search || "";
+        var hash = window.location.hash || "";
+        window.location.replace("/#" + path + search + hash);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Yönlendiriliyor...</p>
+  </body>
+</html>
