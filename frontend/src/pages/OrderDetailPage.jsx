@@ -9,7 +9,9 @@ export default function OrderDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [actionMessage, setActionMessage] = useState("");
+  const [showReturnForm, setShowReturnForm] = useState(false);
   const [returnReason, setReturnReason] = useState("Ürün beklentimi karşılamadı");
+  const [customReturnReason, setCustomReturnReason] = useState("");
 
   const returnReasons = [
     "Ürün hasarlı geldi",
@@ -17,6 +19,7 @@ export default function OrderDetailPage() {
     "Ürün beklentimi karşılamadı",
     "Beden/ölçü uyumsuz",
     "Eksik parça/aksesuar",
+    "Diğer...",
   ];
 
   useEffect(() => {
@@ -40,8 +43,16 @@ export default function OrderDetailPage() {
 
   async function handleReturnRequest() {
     try {
-      await requestReturnOrder(id, returnReason);
+      const reason = returnReason === "Diğer..." ? customReturnReason.trim() : returnReason;
+
+      if (!reason) {
+        setActionMessage("Lütfen bir iade nedeni yaz.");
+        return;
+      }
+
+      await requestReturnOrder(id, reason);
       setActionMessage("İade talebi gönderildi.");
+      setShowReturnForm(false);
       const data = await fetchOrderById(id);
       setOrder(data);
     } catch (actionError) {
@@ -81,7 +92,7 @@ export default function OrderDetailPage() {
         </section>
       </div>
 
-      {order.trackingStatus === "delivered" && !order.returnRequested && !order.returnedAt && (
+      {order.trackingStatus === "delivered" && !order.returnRequested && !order.returnedAt && showReturnForm && (
         <section className="space-y-3 rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
           <h3 className="text-sm font-semibold text-zinc-100">İade nedeni</h3>
           <select
@@ -95,17 +106,33 @@ export default function OrderDetailPage() {
               </option>
             ))}
           </select>
+          {returnReason === "Diğer..." && (
+            <input
+              value={customReturnReason}
+              onChange={(event) => setCustomReturnReason(event.target.value)}
+              placeholder="İade nedenini yaz"
+              className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none transition focus:border-rose-500"
+            />
+          )}
         </section>
       )}
 
       <div className="flex flex-wrap gap-3">
         <button
-          onClick={handleReturnRequest}
+          onClick={() => setShowReturnForm((current) => !current)}
           className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-100"
           disabled={order.trackingStatus !== "delivered" || Boolean(order.returnRequested) || Boolean(order.returnedAt)}
         >
           İade talebi oluştur
         </button>
+        {showReturnForm && order.trackingStatus === "delivered" && !order.returnRequested && !order.returnedAt && (
+          <button
+            onClick={handleReturnRequest}
+            className="rounded-full bg-gradient-to-r from-rose-500 to-fuchsia-600 px-4 py-2 text-sm font-semibold text-white"
+          >
+            İade talebini gönder
+          </button>
+        )}
         {actionMessage && <p className="self-center text-sm text-zinc-300">{actionMessage}</p>}
       </div>
 
