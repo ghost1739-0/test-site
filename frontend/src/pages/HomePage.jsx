@@ -56,38 +56,21 @@ export default function HomePage() {
   return (
     <main className="space-y-6">
       <section className="overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/60 p-6 backdrop-blur-md">
-        <div className="grid gap-6 lg:grid-cols-[1.1fr,0.9fr]">
-          <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-zinc-400">Premium storefront</p>
-            <h1 className="mt-3 text-4xl font-black leading-tight text-zinc-100 sm:text-5xl">
-              Modern bir e-ticaret sitesinden bekledigin her sey.
-            </h1>
-            <p className="mt-4 max-w-2xl text-zinc-300">
-              Temiz bir arayuzle ara, filtrele, urun incele, sepete ekle, odeme yap ve siparislerini takip et.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link to="/checkout" className="rounded-full bg-rose-500 px-5 py-3 font-semibold text-white transition hover:bg-rose-400">
-                Odemeye git
-              </Link>
-              <Link to="/orders" className="rounded-full border border-zinc-700 px-5 py-3 font-semibold text-zinc-200 transition hover:border-rose-500 hover:text-rose-300">
-                Siparisleri gor
-              </Link>
-            </div>
-          </div>
-
-          <div className="grid gap-3 rounded-2xl border border-white/10 bg-zinc-950 p-4 sm:grid-cols-3 lg:grid-cols-1">
-            <div className="rounded-xl bg-zinc-900 p-4">
-              <p className="text-sm text-zinc-400">Kategoriler</p>
-              <p className="mt-1 text-2xl font-black text-rose-400">{categories.length || 4}</p>
-            </div>
-            <div className="rounded-xl bg-zinc-900 p-4">
-              <p className="text-sm text-zinc-400">Urunler</p>
-              <p className="mt-1 text-2xl font-black text-rose-400">{products.length}</p>
-            </div>
-            <div className="rounded-xl bg-zinc-900 p-4">
-              <p className="text-sm text-zinc-400">Durum</p>
-              <p className="mt-1 text-2xl font-black text-emerald-400">Yayinda</p>
-            </div>
+        <div>
+          <p className="text-sm uppercase tracking-[0.3em] text-zinc-400">Premium storefront</p>
+          <h1 className="mt-3 text-4xl font-black leading-tight text-zinc-100 sm:text-6xl">
+            Modern bir e-ticaret sitesinden beklediğin her şey.
+          </h1>
+          <p className="mt-4 max-w-3xl text-zinc-300">
+            Temiz bir arayüzle ara, filtrele, ürün incele, sepete ekle, ödeme yap ve siparişlerini takip et.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link to="/checkout" className="rounded-full bg-rose-500 px-5 py-3 font-semibold text-white transition hover:bg-rose-400">
+              Ödemeye git
+            </Link>
+            <Link to="/orders" className="rounded-full border border-zinc-700 px-5 py-3 font-semibold text-zinc-200 transition hover:border-rose-500 hover:text-rose-300">
+              Siparişleri gör
+            </Link>
           </div>
         </div>
       </section>
@@ -104,14 +87,14 @@ export default function HomePage() {
         <section>
           <div className="mb-5 rounded-2xl border border-white/10 bg-zinc-900/60 p-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-xl font-extrabold text-zinc-100">One Cikan Urunler</h2>
-              <span className="text-sm text-zinc-400">{pagination.total} urun</span>
+              <h2 className="text-xl font-extrabold text-zinc-100">Öne Çıkan Ürünler</h2>
+              <span className="text-sm text-zinc-400">{pagination.total} ürün</span>
             </div>
 
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Urun adina gore ara..."
+              placeholder="Ürün adına göre ara..."
               className="mt-4 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-rose-500"
             />
 
@@ -125,13 +108,13 @@ export default function HomePage() {
                 <option value="-createdAt">En yeni</option>
                 <option value="price">Fiyat: Artan</option>
                 <option value="-price">Fiyat: Azalan</option>
-                <option value="-rating">Puana gore</option>
+                <option value="-rating">Puana göre</option>
               </select>
             </div>
           </div>
 
           {loading ? (
-            <p className="text-zinc-300">Urunler yukleniyor...</p>
+            <p className="text-zinc-300">Ürünler yükleniyor...</p>
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {products.map((product) => (
@@ -146,7 +129,7 @@ export default function HomePage() {
               onClick={() => setPage((current) => Math.max(1, current - 1))}
               className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-200 disabled:opacity-40"
             >
-              Onceki
+              Önceki
             </button>
             <button
               disabled={pagination.page >= pagination.pages}
