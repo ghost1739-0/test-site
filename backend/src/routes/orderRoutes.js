@@ -27,6 +27,9 @@ router.route("/:id/cancel-request").post(asyncHandler(protect), asyncHandler(req
 router.route("/:id/cancel-approve").put(asyncHandler(protect), asyncHandler(adminOnly), asyncHandler(approveOrderCancellation));
 router.route("/:id/return-request").post(asyncHandler(protect), asyncHandler(requestOrderReturn));
 router.route("/:id/return-approve").put(asyncHandler(protect), asyncHandler(adminOnly), asyncHandler(approveOrderReturn));
-router.route("/:id/return-reject").put(asyncHandler(protect), asyncHandler(adminOnly), asyncHandler(rejectOrderReturn));
+router
+  .route("/:id/return-reject")
+  .put(asyncHandler(protect), asyncHandler(adminOnly), asyncHandler(rejectOrderReturn))
+  .post(asyncHandler(protect), asyncHandler(adminOnly), asyncHandler(rejectOrderReturn));
 
 export default router;
