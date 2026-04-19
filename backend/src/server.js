@@ -19,7 +19,16 @@ import { seedDatabase } from "./utils/seedDatabase.js";
 dotenv.config();
 
 await connectDB();
-await seedDatabase();
+
+const shouldSeedOnStartup =
+  process.env.SEED_ON_STARTUP === "true" || process.env.NODE_ENV !== "production";
+
+if (shouldSeedOnStartup) {
+  await seedDatabase();
+  console.log("Startup seed completed.");
+} else {
+  console.log("Startup seed skipped (production mode).");
+}
 
 const app = express();
 const uploadsPath = path.join(process.cwd(), "uploads");

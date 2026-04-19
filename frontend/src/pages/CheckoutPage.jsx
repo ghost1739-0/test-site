@@ -144,7 +144,7 @@ export default function CheckoutPage() {
 
         <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
           <label className="mb-2 block text-sm text-zinc-300">Kupon kodu</label>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <input
               value={couponCode}
               onChange={(event) => setCouponCode(event.target.value.toUpperCase())}
@@ -154,7 +154,7 @@ export default function CheckoutPage() {
             <button
               type="button"
               onClick={handleApplyCoupon}
-              className="rounded-xl bg-zinc-800 px-4 py-2 text-sm font-semibold text-zinc-100"
+              className="w-full rounded-xl bg-zinc-800 px-4 py-2 text-sm font-semibold text-zinc-100 sm:w-auto"
             >
               Uygula
             </button>
@@ -166,7 +166,7 @@ export default function CheckoutPage() {
 
         <button
           disabled={saving}
-          className="rounded-full bg-gradient-to-r from-rose-500 to-fuchsia-600 px-6 py-3 font-semibold text-white shadow-lg shadow-rose-500/20 transition hover:brightness-110 disabled:opacity-60"
+          className="w-full rounded-full bg-gradient-to-r from-rose-500 to-fuchsia-600 px-6 py-3 font-semibold text-white shadow-lg shadow-rose-500/20 transition hover:brightness-110 disabled:opacity-60 sm:w-auto"
         >
             {saving ? "Siparis olusturuluyor..." : "Siparisi tamamla"}
         </button>

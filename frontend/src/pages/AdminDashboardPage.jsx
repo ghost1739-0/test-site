@@ -229,11 +229,11 @@ export default function AdminDashboardPage() {
 
           <div className="mt-4 space-y-2">
             {coupons.map((coupon) => (
-              <div key={coupon._id} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-3 text-sm">
+              <div key={coupon._id} className="flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-sm sm:flex-row sm:items-center sm:justify-between">
                 <div className="text-zinc-300">
                   {coupon.code} - {trDiscountType(coupon.discountType)} {coupon.discountValue}
                 </div>
-                <button onClick={() => handleDeleteCoupon(coupon._id)} className="rounded-lg bg-rose-500 px-3 py-1 text-white">
+                <button onClick={() => handleDeleteCoupon(coupon._id)} className="w-full rounded-lg bg-rose-500 px-3 py-1 text-white sm:w-auto">
                   Sil
                 </button>
               </div>
@@ -296,7 +296,7 @@ export default function AdminDashboardPage() {
                           }))
                         }
                         placeholder="Red nedeni yaz"
-                        className="min-w-[180px] rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1 text-zinc-100"
+                        className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1 text-zinc-100 sm:min-w-[180px] sm:w-auto"
                       />
                       <button
                         type="button"

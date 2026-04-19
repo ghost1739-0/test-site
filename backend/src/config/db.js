@@ -8,5 +8,6 @@ export async function connectDB() {
   }
 
   await mongoose.connect(mongoURI);
-  console.log("MongoDB connected successfully.");
+  const dbName = mongoose.connection.name;
+  console.log(`MongoDB connected successfully. Database: ${dbName}`);
 }
