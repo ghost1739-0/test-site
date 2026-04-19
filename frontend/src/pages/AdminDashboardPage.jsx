@@ -27,6 +27,7 @@ export default function AdminDashboardPage() {
   const [coupons, setCoupons] = useState([]);
   const [couponForm, setCouponForm] = useState(initialCoupon);
   const [message, setMessage] = useState("");
+  const [orderActionMessage, setOrderActionMessage] = useState("");
   const [returnRejectReasons, setReturnRejectReasons] = useState({});
 
   function trDiscountType(type) {
@@ -70,12 +71,14 @@ export default function AdminDashboardPage() {
 
   async function handleApproveReturn(orderId) {
     await approveReturnAdmin(orderId);
+    setOrderActionMessage("İade onaylandı.");
     await loadAll();
   }
 
   async function handleRejectReturn(orderId) {
     const reason = (returnRejectReasons[orderId] || "").trim();
     await rejectReturnAdmin(orderId, reason);
+    setOrderActionMessage("İade reddedildi.");
     await loadAll();
   }
 
@@ -99,6 +102,7 @@ export default function AdminDashboardPage() {
   return (
     <main className="space-y-6">
       <h1 className="text-3xl font-black text-zinc-100">Yönetici Paneli</h1>
+      {orderActionMessage && <p className="text-sm text-emerald-300">{orderActionMessage}</p>}
 
       {stats && (
         <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
@@ -219,6 +223,17 @@ export default function AdminDashboardPage() {
                   <p className="text-zinc-300">#{order._id.slice(-6)} - {order.totalPrice} TL</p>
                   <p className="text-zinc-400">{trTrackingStatus(order.trackingStatus)}</p>
                 </div>
+                <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                  {order.returnRequested && !order.returnRejectedAt && !order.returnedAt && (
+                    <span className="rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-1 text-amber-300">İade bekliyor</span>
+                  )}
+                  {order.returnRejectedAt && (
+                    <span className="rounded-full border border-rose-500/40 bg-rose-500/10 px-2 py-1 text-rose-300">İade reddedildi</span>
+                  )}
+                  {order.returnedAt && (
+                    <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-1 text-emerald-300">İade onaylandı</span>
+                  )}
+                </div>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {[
                     "processing",
@@ -228,6 +243,7 @@ export default function AdminDashboardPage() {
                   ].map((status) => (
                     <button
                       key={status}
+                      type="button"
                       onClick={() => handleUpdateTracking(order._id, status)}
                       className="rounded-lg border border-white/10 px-2 py-1 text-zinc-200"
                     >
@@ -235,13 +251,13 @@ export default function AdminDashboardPage() {
                     </button>
                   ))}
                   {order.cancelRequested && !order.canceledAt && (
-                    <button onClick={() => handleApproveCancel(order._id)} className="rounded-lg bg-amber-500 px-2 py-1 text-black">
+                    <button type="button" onClick={() => handleApproveCancel(order._id)} className="rounded-lg bg-amber-500 px-2 py-1 text-black">
                       İptali onayla
                     </button>
                   )}
                   {order.returnRequested && !order.returnedAt && !order.returnRejectedAt && (
                     <>
-                      <button onClick={() => handleApproveReturn(order._id)} className="rounded-lg bg-emerald-500 px-2 py-1 text-black">
+                      <button type="button" onClick={() => handleApproveReturn(order._id)} className="rounded-lg bg-emerald-500 px-2 py-1 text-black">
                         İadeyi onayla
                       </button>
                       <input
@@ -255,7 +271,7 @@ export default function AdminDashboardPage() {
                         placeholder="Red nedeni yaz"
                         className="min-w-[180px] rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1 text-zinc-100"
                       />
-                      <button onClick={() => handleRejectReturn(order._id)} className="rounded-lg bg-rose-500 px-2 py-1 text-white">
+                      <button type="button" onClick={() => handleRejectReturn(order._id)} className="rounded-lg bg-rose-500 px-2 py-1 text-white">
                         İadeyi reddet
                       </button>
                     </>
