@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchMyOrders } from "../api/ordersApi";
 import { useAuth } from "../context/AuthContext";
+import { trTrackingStatus } from "../utils/localeTr";
 
 export default function OrdersPage() {
   const { user } = useAuth();
@@ -68,7 +69,7 @@ export default function OrdersPage() {
               </div>
               <div className="text-right">
                 <p className="text-rose-400 font-black">{order.totalPrice} TL</p>
-                <p className="text-sm text-zinc-400">{order.isDelivered ? "Teslim edildi" : "Hazirlaniyor"}</p>
+                <p className="text-sm text-zinc-400">{trTrackingStatus(order.trackingStatus)}</p>
               </div>
             </div>
           </Link>
