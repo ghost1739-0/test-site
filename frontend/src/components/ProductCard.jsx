@@ -35,7 +35,7 @@ export default function ProductCard({ product }) {
             {trCategory(product.category)}
           </span>
           <span className="rounded-full bg-rose-500/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-md">
-            Stok {product.stock}
+            Stok: {product.stock}
           </span>
         </div>
         <button
@@ -46,7 +46,7 @@ export default function ProductCard({ product }) {
               : "border-white/20 bg-zinc-950/70 text-zinc-200 hover:border-rose-400"
           }`}
         >
-          {isFavorite ? "Kayitli" : "Kaydet"}
+          {isFavorite ? "Favori" : "Favorilere ekle"}
         </button>
       </div>
 
@@ -61,8 +61,8 @@ export default function ProductCard({ product }) {
         <p className="line-clamp-2 text-sm leading-6 text-zinc-400">{product.description}</p>
 
         <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-zinc-500">
-          <span>Hizli kargo</span>
-          <span>Guvenli odeme</span>
+          <span>Hızlı kargo</span>
+          <span>Güvenli ödeme</span>
         </div>
 
         <div className="flex items-center justify-between gap-3 pt-2">
@@ -75,7 +75,7 @@ export default function ProductCard({ product }) {
               to={`/products/${product._id}`}
               className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-200 transition hover:border-rose-500 hover:bg-rose-500/10 hover:text-white"
             >
-              Incele
+              İncele
             </Link>
             <button
               onClick={() => addToCart(product)}

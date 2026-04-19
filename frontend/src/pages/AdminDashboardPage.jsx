@@ -28,7 +28,7 @@ export default function AdminDashboardPage() {
   const [message, setMessage] = useState("");
 
   function trDiscountType(type) {
-    if (type === "percent") return "Yuzde";
+    if (type === "percent") return "Yüzde";
     if (type === "fixed") return "Sabit";
     return type;
   }
@@ -53,7 +53,7 @@ export default function AdminDashboardPage() {
   }, [user]);
 
   if (!user || user.role !== "admin") {
-    return <p className="rounded-2xl border border-white/10 bg-zinc-950/70 p-6 text-zinc-300">Yonetici erisimi gerekli.</p>;
+    return <p className="rounded-2xl border border-white/10 bg-zinc-950/70 p-6 text-zinc-300">Yönetici erişimi gerekli.</p>;
   }
 
   async function handleUpdateTracking(orderId, status) {
@@ -79,7 +79,7 @@ export default function AdminDashboardPage() {
       code: String(couponForm.code).toUpperCase(),
     });
     setCouponForm(initialCoupon);
-    setMessage("Kupon olusturuldu.");
+    setMessage("Kupon oluşturuldu.");
     await loadAll();
   }
 
@@ -90,15 +90,15 @@ export default function AdminDashboardPage() {
 
   return (
     <main className="space-y-6">
-      <h1 className="text-3xl font-black text-zinc-100">Yonetici Paneli</h1>
+      <h1 className="text-3xl font-black text-zinc-100">Yönetici Paneli</h1>
 
       {stats && (
         <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
           {[
-            ["Kullanicilar", stats.users],
-            ["Urunler", stats.products],
-            ["Siparisler", stats.orders],
-            ["Odenen", stats.paidOrders],
+            ["Kullanıcılar", stats.users],
+            ["Ürünler", stats.products],
+            ["Siparişler", stats.orders],
+            ["Ödenen", stats.paidOrders],
             ["Ciro", `${Math.round(stats.totalSales)} TL`],
           ].map(([title, value]) => (
             <article key={title} className="rounded-2xl border border-white/10 bg-zinc-950/70 p-4">
@@ -110,14 +110,14 @@ export default function AdminDashboardPage() {
       )}
 
       <section className="rounded-2xl border border-white/10 bg-zinc-950/70 p-4">
-        <h2 className="text-xl font-black text-zinc-100">Dusuk stok uyarilari</h2>
+        <h2 className="text-xl font-black text-zinc-100">Düşük stok uyarıları</h2>
         {alerts.length === 0 ? (
-          <p className="mt-3 text-sm text-zinc-400">Stok uyarisi yok.</p>
+          <p className="mt-3 text-sm text-zinc-400">Stok uyarısı yok.</p>
         ) : (
           <div className="mt-3 space-y-2">
             {alerts.map((item) => (
               <p key={item._id} className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-zinc-300">
-                {item.name} - Stok {item.stock} (esik {item.lowStockThreshold})
+                {item.name} - Stok {item.stock} (eşik {item.lowStockThreshold})
               </p>
             ))}
           </div>
@@ -128,44 +128,62 @@ export default function AdminDashboardPage() {
         <div className="rounded-2xl border border-white/10 bg-zinc-950/70 p-4">
           <h2 className="text-xl font-black text-zinc-100">Kuponlar</h2>
           <form onSubmit={handleCreateCoupon} className="mt-3 grid gap-2 sm:grid-cols-2">
-            <input
-              value={couponForm.code}
-              onChange={(event) => setCouponForm({ ...couponForm, code: event.target.value })}
-              placeholder="Kod"
-              className="rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
-              required
-            />
-            <select
-              value={couponForm.discountType}
-              onChange={(event) => setCouponForm({ ...couponForm, discountType: event.target.value })}
-              className="rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
-            >
-              <option value="percent">Yuzde</option>
-              <option value="fixed">Sabit</option>
-            </select>
-            <input
-              type="number"
-              value={couponForm.discountValue}
-              onChange={(event) => setCouponForm({ ...couponForm, discountValue: Number(event.target.value) })}
-              placeholder="Indirim"
-              className="rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
-              required
-            />
-            <input
-              type="number"
-              value={couponForm.minOrderAmount}
-              onChange={(event) => setCouponForm({ ...couponForm, minOrderAmount: Number(event.target.value) })}
-              placeholder="Minimum siparis"
-              className="rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
-            />
-            <input
-              type="number"
-              value={couponForm.maxDiscountAmount}
-              onChange={(event) => setCouponForm({ ...couponForm, maxDiscountAmount: Number(event.target.value) })}
-              placeholder="Maksimum indirim"
-              className="rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
-            />
-            <button className="rounded-xl bg-rose-500 px-4 py-2 text-white">Kupon olustur</button>
+            <label className="space-y-1 text-sm text-zinc-300">
+              <span>Kupon kodu</span>
+              <input
+                value={couponForm.code}
+                onChange={(event) => setCouponForm({ ...couponForm, code: event.target.value })}
+                placeholder="Örn: HOSGELDIN10"
+                className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
+                required
+              />
+            </label>
+            <label className="space-y-1 text-sm text-zinc-300">
+              <span>İndirim türü</span>
+              <select
+                value={couponForm.discountType}
+                onChange={(event) => setCouponForm({ ...couponForm, discountType: event.target.value })}
+                className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
+              >
+                <option value="percent">Yüzde</option>
+                <option value="fixed">Sabit tutar</option>
+              </select>
+            </label>
+            <label className="space-y-1 text-sm text-zinc-300">
+              <span>İndirim değeri</span>
+              <input
+                type="number"
+                value={couponForm.discountValue}
+                onChange={(event) => setCouponForm({ ...couponForm, discountValue: Number(event.target.value) })}
+                placeholder="Yüzde ise 10, sabit ise 100"
+                className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
+                required
+              />
+              <p className="text-xs text-zinc-500">Bu sayı, kuponun ne kadar indirim yapacağını belirler.</p>
+            </label>
+            <label className="space-y-1 text-sm text-zinc-300">
+              <span>Minimum sepet tutarı (TL)</span>
+              <input
+                type="number"
+                value={couponForm.minOrderAmount}
+                onChange={(event) => setCouponForm({ ...couponForm, minOrderAmount: Number(event.target.value) })}
+                placeholder="Örn: 500"
+                className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
+              />
+              <p className="text-xs text-zinc-500">Kuponun geçerli olması için sipariş toplamının ulaşması gereken alt limit.</p>
+            </label>
+            <label className="space-y-1 text-sm text-zinc-300 sm:col-span-2">
+              <span>Maksimum indirim tutarı (TL)</span>
+              <input
+                type="number"
+                value={couponForm.maxDiscountAmount}
+                onChange={(event) => setCouponForm({ ...couponForm, maxDiscountAmount: Number(event.target.value) })}
+                placeholder="Örn: 250"
+                className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100"
+              />
+              <p className="text-xs text-zinc-500">Yüzde kuponlarda toplam indirimin çıkabileceği en yüksek sınır.</p>
+            </label>
+            <button className="rounded-xl bg-rose-500 px-4 py-2 text-white sm:col-span-2">Kupon oluştur</button>
           </form>
 
           {message && <p className="mt-2 text-sm text-emerald-300">{message}</p>}
@@ -185,7 +203,7 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-zinc-950/70 p-4">
-          <h2 className="text-xl font-black text-zinc-100">Siparis yonetimi</h2>
+          <h2 className="text-xl font-black text-zinc-100">Sipariş yönetimi</h2>
           <div className="mt-3 space-y-2">
             {orders.map((order) => (
               <article key={order._id} className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm">
@@ -210,12 +228,12 @@ export default function AdminDashboardPage() {
                   ))}
                   {order.cancelRequested && !order.canceledAt && (
                     <button onClick={() => handleApproveCancel(order._id)} className="rounded-lg bg-amber-500 px-2 py-1 text-black">
-                      Iptali onayla
+                      İptali onayla
                     </button>
                   )}
                   {order.returnRequested && !order.returnedAt && (
                     <button onClick={() => handleApproveReturn(order._id)} className="rounded-lg bg-emerald-500 px-2 py-1 text-black">
-                      Iadeyi onayla
+                      İadeyi onayla
                     </button>
                   )}
                 </div>
