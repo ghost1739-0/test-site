@@ -64,34 +64,6 @@ export default function HomePage() {
         />
 
         <section>
-          <div className="mb-5 rounded-2xl border border-white/10 bg-zinc-900/60 p-4">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-xl font-extrabold text-zinc-100">Öne Çıkan Ürünler</h2>
-              <span className="text-sm text-zinc-400">{pagination.total} ürün</span>
-            </div>
-
-            <input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Ürün adına göre ara..."
-              className="mt-4 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-rose-500"
-            />
-
-            <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-              <div className="text-sm text-zinc-400">Sayfa {pagination.page} / {pagination.pages || 1}</div>
-              <select
-                value={sort}
-                onChange={(event) => setSort(event.target.value)}
-                className="rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2 text-sm text-zinc-100 outline-none"
-              >
-                <option value="-createdAt">En yeni</option>
-                <option value="price">Fiyat: Artan</option>
-                <option value="-price">Fiyat: Azalan</option>
-                <option value="-rating">Puana göre</option>
-              </select>
-            </div>
-          </div>
-
           {loading ? (
             <p className="text-zinc-300">Ürünler yükleniyor...</p>
           ) : (
