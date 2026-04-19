@@ -1,4 +1,4 @@
-const API_BASE = "https://eticaret-backend-tvpe.onrender.com/api";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export async function request(path, options = {}) {
   const token = localStorage.getItem("architect_shop_token");
