@@ -5,8 +5,8 @@ import { useAuth } from "../context/AuthContext";
 export default function AuthPage() {
   const [mode, setMode] = useState("login");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@earchitect.com");
+  const [password, setPassword] = useState("Admin123!");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const { login, register } = useAuth();
@@ -58,25 +58,24 @@ export default function AuthPage() {
 
       <section className="rounded-[2rem] border border-white/10 bg-zinc-950/75 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl">
         <div className="mb-6 flex items-center justify-between gap-4">
-          <h2 className="text-2xl font-black text-zinc-100">{mode === "login" ? "Giriş Yap" : "Hesap Oluştur"}</h2>
+          <h2 className="text-2xl font-black text-zinc-100">{mode === "login" ? "Giris Yap" : "Hesap Olustur"}</h2>
           <button
             onClick={() => setMode(mode === "login" ? "register" : "login")}
             className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-200 transition hover:border-rose-500/50 hover:text-white"
           >
-            {mode === "login" ? "Hesabın yok mu?" : "Hesabın var mı?"}
+            {mode === "login" ? "Hesabin yok mu?" : "Hesabin var mi?"}
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {mode === "register" && (
             <div>
-              <label className="mb-2 block text-sm font-semibold text-zinc-300">Ad Soyadı</label>
+              <label className="mb-2 block text-sm font-semibold text-zinc-300">Ad Soyad</label>
               <input
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none transition focus:border-rose-500"
                 placeholder="Ad soyad"
-                autoComplete="off"
                 required
               />
             </div>
@@ -90,20 +89,18 @@ export default function AuthPage() {
               onChange={(event) => setEmail(event.target.value)}
               className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none transition focus:border-rose-500"
               placeholder="demo@email.com"
-              autoComplete="off"
               required
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-semibold text-zinc-300">Şifre</label>
+            <label className="mb-2 block text-sm font-semibold text-zinc-300">Sifre</label>
             <input
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none transition focus:border-rose-500"
               placeholder="••••••••"
-              autoComplete="new-password"
               required
             />
           </div>
@@ -114,7 +111,7 @@ export default function AuthPage() {
             disabled={saving}
             className="w-full rounded-2xl bg-gradient-to-r from-rose-500 to-fuchsia-600 px-4 py-3 font-semibold text-white shadow-lg shadow-rose-500/20 transition hover:brightness-110 disabled:opacity-60"
           >
-            {saving ? "Lütfen bekle..." : mode === "login" ? "Giriş Yap" : "Kayıt Ol"}
+            {saving ? "Lutfen bekle..." : mode === "login" ? "Giris Yap" : "Kayit Ol"}
           </button>
         </form>
       </section>
