@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: "Manrope", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(244, 63, 94, 0.28);
+  color: #fff;
+}
+
+body {
+  @apply min-h-screen bg-zinc-950 text-zinc-100 antialiased;
+  background-image:
+    radial-gradient(circle at 18% 15%, rgba(244, 63, 94, 0.22), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(59, 130, 246, 0.16), transparent 28%),
+    radial-gradient(circle at 50% 82%, rgba(16, 185, 129, 0.08), transparent 35%),
+    linear-gradient(135deg, #09090b 0%, #111827 45%, #050505 100%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), transparent 85%);
+  opacity: 0.35;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.55), rgba(244, 63, 94, 0.25));
+  border-radius: 999px;
+  border: 2px solid #09090b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.8), rgba(244, 63, 94, 0.45));
+}
